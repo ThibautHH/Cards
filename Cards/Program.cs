@@ -1,5 +1,4 @@
 using System.Globalization;
-using Cards.Areas.Identity;
 using Cards.Data;
 
 using Microsoft.AspNetCore.Components.Authorization;
@@ -45,7 +44,6 @@ namespace Cards
 
                 builder.Services.AddRazorPages().AddMvcLocalization(LanguageViewLocationExpanderFormat.Suffix);
                 builder.Services.AddServerSideBlazor();
-                builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
                 void configureAuthenticationAndAuthorization()
                 {
