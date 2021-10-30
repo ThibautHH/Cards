@@ -1,13 +1,11 @@
 using System.Globalization;
 using Cards.Data;
 
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Cards
 {
@@ -44,6 +42,7 @@ namespace Cards
 
                 builder.Services.AddRazorPages().AddMvcLocalization(LanguageViewLocationExpanderFormat.Suffix);
                 builder.Services.AddServerSideBlazor();
+                builder.Services.AddSignalR();
 
                 void configureAuthenticationAndAuthorization()
                 {
