@@ -90,3 +90,7 @@ a, .btn-link {
     visibility: visible;
     opacity: 1;
 }
+
+.tooltip .tooltiptext.requires-authentication::after {
+    content: "You must be signed in to perform this action."
+}
