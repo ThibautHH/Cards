@@ -1,0 +1,51 @@
+@using Cards.Server.Clients
+@using Cards.Server.Hubs
+@using Microsoft.AspNetCore.SignalR
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavigationManager
+@implements IPlayerListClient
+@implements IAsyncDisposable
+
+<div class="form-group">
+    <label>
+        Number of players: @this.playerCount
+    </label>
+</div>
+
+<hr />
+
+<ul id="playerList">
+    @foreach (string player in this.players)
+    {
+
+        <li>@player</li>
+    }
+</ul>
+
+@code {
+    public HubConnection hubConnection = null!;
+    private IList<string> players = new List<string>();
+    private int playerCount => players.Count;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/Hubs/PlayerList"))
+            .Build();
+
+        this.hubConnection.On<string>("Update", this.Update);
+        await this.hubConnection.StartAsync();
+    }
+
+    public Task Update(string player)
+    {
+        this.players.Add(player);
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+        
+    public async ValueTask DisposeAsync() {
+        if (this.hubConnection is not null)
+            await this.hubConnection.DisposeAsync();
+    }
+}
