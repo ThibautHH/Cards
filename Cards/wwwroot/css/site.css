@@ -62,3 +62,30 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    opacity: initial;
+}
+
+.tooltip .tooltiptext {
+    display: inherit;
+    visibility: hidden;
+    position: relative;
+    left: 2px;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity .6s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
