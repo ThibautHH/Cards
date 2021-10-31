@@ -1,5 +1,6 @@
 using System.Globalization;
 using Cards.Data;
+using Cards.Server.Hubs;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -113,6 +114,7 @@ namespace Cards
                 application.UseEndpoints(endpoints =>
                 {
                     endpoints.MapBlazorHub();
+                    endpoints.MapHub<PlayerListHub>("/Hubs/PlayerList");
                     endpoints.MapFallbackToPage("/_Host");
                 });
             }
