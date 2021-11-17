@@ -1,7 +1,15 @@
-﻿namespace Cards.Server.Clients
+﻿using Cards.Data;
+
+namespace Cards.Server.Clients
 {
     public interface IPlayerListClient
     {
-        Task Update(string player);
+        Task Signup(Player player);
+
+        Task Quit(Player player);
+
+        Task Ready(Player player);
+
+        Task Unready(Player player);
     }
 }

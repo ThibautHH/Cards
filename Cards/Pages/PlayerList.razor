@@ -1,3 +1,4 @@
+@using Cards.Data
 @using Cards.Server.Clients
 @using Cards.Server.Hubs
 @using Microsoft.AspNetCore.SignalR
@@ -15,16 +16,16 @@
 <hr />
 
 <ul id="playerList">
-    @foreach (string player in this.players)
+    @foreach (Player player in this.players)
     {
 
-        <li>@player</li>
+        <li>@player.Name | @(player.Ready ? string.Empty : "Not ")Ready</li>
     }
 </ul>
 
 @code {
     public HubConnection hubConnection = null!;
-    private IList<string> players = new List<string>();
+    public IList<Player> players = new List<Player>();
     private int playerCount => players.Count;
 
     protected override async Task OnInitializedAsync()
@@ -32,19 +33,49 @@
         this.hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/Hubs/PlayerList"))
             .Build();
-
-        this.hubConnection.On<string>("Update", this.Update);
+        this.hubConnection.On<Player>("Signup", this.Signup);
+        this.hubConnection.On<Player>("Quit", this.Quit);
+        this.hubConnection.On<Player>("Ready", this.Ready);
+        this.hubConnection.On<Player>("Unready", this.Unready);
         await this.hubConnection.StartAsync();
     }
 
-    public Task Update(string player)
+    public Task Signup(Player registeringPlayer)
     {
-        this.players.Add(player);
-        StateHasChanged();
+        if (this.players.SingleOrDefault(player => player == registeringPlayer) is null)
+        {
+            this.players.Add(registeringPlayer);
+            this.StateHasChanged();
+        }
+        return Task.CompletedTask;
+    }
+
+    public Task Quit(Player player)
+    {
+        if (this.players.SingleOrDefault(quitingPlayer => quitingPlayer == player) is Player quitingPlayer)
+        {
+            this.players.Remove(quitingPlayer);
+            this.StateHasChanged();
+        }
+        return Task.CompletedTask;
+    }
+
+    public Task Ready(Player player)
+    {
+        this.players.Single(playerToReady => playerToReady == player).SetReady();
+        this.StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    public Task Unready(Player player)
+    {
+        this.players.Single(playerToUnready => playerToUnready == player).Unready();
+        this.StateHasChanged();
         return Task.CompletedTask;
     }
         
-    public async ValueTask DisposeAsync() {
+    public async ValueTask DisposeAsync()
+    {
         if (this.hubConnection is not null)
             await this.hubConnection.DisposeAsync();
     }
