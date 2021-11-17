@@ -1,6 +1,8 @@
 using System.Globalization;
+
 using Cards.Data;
 using Cards.Server.Hubs;
+using Cards.Services;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -27,6 +29,10 @@ namespace Cards
                     .AddDefaultTokenProviders();
 
                 //builder.Services.AddSingleton<IEmailSender, EmailSender>();
+
+                builder.Services.AddHttpContextAccessor();
+                
+                builder.Services.AddScoped<HttpContextService>();
 
                 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
@@ -111,12 +117,9 @@ namespace Cards
                 application.UseAuthentication();
                 application.UseAuthorization();
 
-                application.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapBlazorHub();
-                    endpoints.MapHub<PlayerListHub>("/Hubs/PlayerList");
-                    endpoints.MapFallbackToPage("/_Host");
-                });
+                application.MapBlazorHub();
+                application.MapHub<PlayerListHub>("/Hubs/PlayerList");
+                application.MapFallbackToPage("/_Host");
             }
             configure();
 
