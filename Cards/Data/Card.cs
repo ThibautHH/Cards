@@ -39,7 +39,7 @@
             this.Player = player!;
         }
 
-        public Deck Deck { get; init; }
+        public CardDeck Deck { get; init; }
 
         public CardColor Color { get; init; }
 
@@ -52,25 +52,25 @@
             Card playedCard = new(this.Deck, this.Color, this.Height, player);
             stack.Stack.Cards.Add(playedCard);
         }
-    }
 
-    public enum Deck : byte
-    {
-        Tarot, Player, Player32
-    }
+        public enum CardDeck : byte
+        {
+            Tarot, Player, Player32
+        }
 
-    public enum CardColor : byte
-    {
-        Diamond, Club, Heart, Spade,
-        Trump
-    }
+        public enum CardColor : byte
+        {
+            Diamond, Club, Heart, Spade,
+            Trump
+        }
 
-    public enum CardHeight : byte
-    {
-        Ace = 1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten,
-        Jack, Knight, Queen, King,
-        Magician, HighPriestess, Empress, Emperor, Hierophant, Lovers, Chariot, Strength, Hermit, WheelofFortune,
-        Justice, HangedMan, Death, Temperance, Devil, Tower, Star, Moon, Sun, Judgement, World,
-        Fool
+        public enum CardHeight : byte
+        {
+            Ace = 1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten,
+            Jack, Knight, Queen, King,
+            Magician, HighPriestess, Empress, Emperor, Hierophant, Lovers, Chariot, Strength, Hermit, WheelofFortune,
+            Justice, HangedMan, Death, Temperance, Devil, Tower, Star, Moon, Sun, Judgement, World,
+            Fool
+        }
     }
 }
