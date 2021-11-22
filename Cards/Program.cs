@@ -34,6 +34,8 @@ namespace Cards
                 
                 builder.Services.AddScoped<HttpContextService>();
 
+                builder.Services.AddTransient<TrickFactory>();
+
                 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
                 builder.Services.Configure<RequestLocalizationOptions>(options =>
