@@ -2,7 +2,11 @@
 {
     public readonly struct Card
     {
-        public Card(Deck deck, CardColor color, CardHeight height)
+        public Card(
+            Deck deck,
+            CardColor color,
+            CardHeight height,
+            Player? player = null)
         {
             this.Deck = deck;
 
@@ -31,6 +35,8 @@
                     " if it is a 32-cards deck card.", nameof(height)),
                 _ => height
             } : height;
+
+            this.Player = player!;
         }
 
         public Deck Deck { get; init; }
@@ -38,6 +44,14 @@
         public CardColor Color { get; init; }
 
         public CardHeight Height { get; init; }
+
+        public Player Player { get; init; }
+
+        public void Play(Player player, ref CardStack stack)
+        {
+            Card playedCard = new(this.Deck, this.Color, this.Height, player);
+            stack.Stack.Cards.Add(playedCard);
+        }
     }
 
     public enum Deck : byte
