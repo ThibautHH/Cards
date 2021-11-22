@@ -1,0 +1,54 @@
+﻿@page "/tarot"
+@using Cards.ComponentBase
+@using Cards.Data
+@using Cards.Pages.Game
+@using Cards.Server.Clients
+@using Cards.Server.Hubs
+@using Cards.Services
+@using Microsoft.AspNetCore.SignalR.Client
+@inject HttpContextService HttpContextService
+@inject NavigationManager NavigationManager
+@inherits TrickGameBase
+<div style="display: @(this.inGame ? "none" : "unset");">
+    <h3>Tarot</h3>
+
+    <PlayerList @ref="this.playerList"/>
+    @if (!this.inGame)
+    {
+    <AuthorizeView>
+        <Authorized>
+            @if (!this.IsPlaying)
+            {
+                <button class="btn btn-primary" @onclick="this.Play">Play</button>
+            } else 
+            {
+                if (!this.IsReady)
+                {
+                    <button class="btn btn-primary" @onclick="this.Ready">Ready</button>
+                } else
+                {
+                    <button class="btn btn-primary" @onclick="this.Unready">Unready</button>
+                    if (this.IsHost && this.hubConnection!.InvokeAsync<bool>("IsGameReady", this.GameName).GetAwaiter().GetResult())
+                       {
+                        <button class="btn btn-primary" @onclick="this.Launch">Launch</button>
+                    }
+                }
+                <button class="btn btn-primary" @onclick="this.Quit">Quit</button>
+            }
+        </Authorized>
+        <NotAuthorized>
+            <div class="tooltip">
+                <button class="btn btn-primary" disabled>Play</button>
+                <span class="tooltiptext requires-authentication" />
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+    }
+</div>
+<div style="display: @(!this.inGame ? "none" : "unset");">
+    <Hand @ref="this.hand"/>
+</div>
+
+@code {
+    protected override string GameName => "Tarot";
+}
