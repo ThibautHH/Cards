@@ -1,4 +1,4 @@
-﻿namespace Cards.Data
+﻿namespace Cards.Data.Game
 {
     public class Player
     {

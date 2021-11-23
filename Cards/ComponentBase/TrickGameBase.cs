@@ -1,4 +1,5 @@
-﻿using Cards.Services;
+﻿using Cards.Data.Game.TrickGame.Cards;
+using Cards.Services;
 
 using Microsoft.AspNetCore.Components;
 
@@ -11,6 +12,6 @@ namespace Cards.ComponentBase
         {
         }
 
-        protected CardStack Stack { get; }
+        protected CardStack Stack { get; init; } = null!;
     }
 }

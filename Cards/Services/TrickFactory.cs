@@ -1,4 +1,5 @@
-﻿using Cards.Data;
+﻿using Cards.Data.Game;
+using Cards.Data.Game.TrickGame.Cards;
 
 namespace Cards.Services
 {
@@ -11,8 +12,8 @@ namespace Cards.Services
         public ITrick Build(IEnumerable<Card> cards, Game game) =>
             game switch
                 {
-                    Data.Game.Tarot => new TarotTrick(cards),
-                    Data.Game.Belote => new BeloteTrick(cards)
+                    Game.Tarot => new TarotTrick(cards),
+                    Game.Belote => new BeloteTrick(cards)
                 };
     }
 }

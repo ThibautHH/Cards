@@ -1,4 +1,4 @@
-﻿using Cards.Data;
+﻿using Cards.Data.Game;
 
 namespace Cards.Server.Clients
 {

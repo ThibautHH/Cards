@@ -1,4 +1,4 @@
-﻿using Cards.Data;
+﻿using Cards.Data.Game;
 using Cards.Server.Clients;
 
 using Microsoft.AspNetCore.SignalR;

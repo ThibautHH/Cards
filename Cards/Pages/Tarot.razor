@@ -1,13 +1,12 @@
 ﻿@page "/tarot"
 @using Cards.ComponentBase
 @using Cards.Data
+@using Cards.Data.Game.TrickGame
 @using Cards.Pages.Game
 @using Cards.Server.Clients
 @using Cards.Server.Hubs
 @using Cards.Services
 @using Microsoft.AspNetCore.SignalR.Client
-@inject HttpContextService HttpContextService
-@inject NavigationManager NavigationManager
 @inherits TrickGameBase
 <div style="display: @(this.inGame ? "none" : "unset");">
     <h3>Tarot</h3>
@@ -29,7 +28,7 @@
                 {
                     <button class="btn btn-primary" @onclick="this.Unready">Unready</button>
                     if (this.IsHost && this.hubConnection!.InvokeAsync<bool>("IsGameReady", this.GameName).GetAwaiter().GetResult())
-                       {
+                    {
                         <button class="btn btn-primary" @onclick="this.Launch">Launch</button>
                     }
                 }
@@ -51,4 +50,6 @@
 
 @code {
     protected override string GameName => "Tarot";
+    
+    protected IList<TarotTeam> Teams { get; } = new List<TarotTeam>();
 }
