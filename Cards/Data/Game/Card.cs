@@ -1,16 +1,18 @@
-﻿namespace Cards.Data
+﻿using Cards.Data.Game.TrickGame.Cards;
+
+namespace Cards.Data.Game
 {
     public readonly struct Card
     {
         public Card(
-            Deck deck,
+            CardDeck deck,
             CardColor color,
             CardHeight height,
             Player? player = null)
         {
             this.Deck = deck;
 
-            this.Color = this.Deck != Deck.Tarot
+            this.Color = this.Deck != CardDeck.Tarot
             ? color switch
             {
                 CardColor.Trump =>
@@ -19,7 +21,7 @@
                 _ => color
             } : color;
 
-            this.Height = this.Deck != Deck.Tarot
+            this.Height = this.Deck != CardDeck.Tarot
             ? height switch
             {
                 (>= CardHeight.Magician) or CardHeight.Knight =>
@@ -27,7 +29,7 @@
                     " if it is not a Tarot card.", nameof(height)),
                 _ => height
             }
-            : this.Deck == Deck.Player32
+            : this.Deck == CardDeck.Player32
             ? height switch
             {
                 (<= CardHeight.Six) and not CardHeight.Ace =>

@@ -1,4 +1,4 @@
-﻿using Cards.Data;
+﻿using Cards.Data.Game;
 using Cards.Pages;
 using Cards.Pages.Game;
 using Cards.Server.Hubs;
