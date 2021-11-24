@@ -1,0 +1,32 @@
+﻿@using Cards.Data.Game
+@using Cards.Data.Game.TrickGame.Cards
+@using Cards.Pages.Game.TrickGame
+
+<div class="hand">
+	@foreach (Card card in this.hand)
+	{
+		<span class="playing-card @(card.Color.ToString().ToLower()) @(card.Height.ToString().ToLower())">
+			<span class="header"></span>
+			<span class="body"></span>
+			<span class="footer"></span>
+		</span>
+	}
+</div>
+
+@code {
+	public IList<Card> hand = new List<Card>();
+
+	[Parameter]
+	public bool Playable { get; set; }
+
+	public void PlayCard(Player player, ref Card card, ref CardStack onTo)
+	{
+		if (!this.Playable)
+			throw new InvalidOperationException("Cannot play a card if Hand.Playable "
+				+ "is set to false.");
+		if (!this.hand.Contains(card))
+			throw new ArgumentException("Cannot play a card not in Hand.hand list.", nameof(Card));
+		card.Play(player, ref onTo);
+		this.hand.Remove(card);
+	}
+}
