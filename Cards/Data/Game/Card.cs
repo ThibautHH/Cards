@@ -1,4 +1,4 @@
-﻿using Cards.Data.Game.TrickGame.Cards;
+﻿using Cards.Pages.Game.TrickGame;
 
 namespace Cards.Data.Game
 {
