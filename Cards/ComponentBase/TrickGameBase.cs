@@ -12,6 +12,6 @@ namespace Cards.ComponentBase
         {
         }
 
-        protected CardStack Stack { get; init; } = null!;
+        protected CardStackBase Stack { get; init; } = null!;
     }
 }
