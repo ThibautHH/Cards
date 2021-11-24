@@ -1,4 +1,4 @@
-﻿using Cards.Data.Game.TrickGame.Cards;
+﻿using Cards.Pages.Game.TrickGame;
 using Cards.Services;
 
 using Microsoft.AspNetCore.Components;
@@ -7,11 +7,14 @@ namespace Cards.ComponentBase
 {
     public abstract class TrickGameBase : CardGameBase
     {
-        protected TrickGameBase(HttpContextService httpContextService, NavigationManager navigationManager)
+        protected TrickFactory _trickFactory;
+
+        protected TrickGameBase(HttpContextService httpContextService, NavigationManager navigationManager, TrickFactory trickFactory)
             : base(httpContextService, navigationManager)
         {
+            this._trickFactory = trickFactory;
         }
 
-        protected CardStackBase Stack { get; init; } = null!;
+        protected CardStack Stack { get; init; } = null!;
     }
 }
