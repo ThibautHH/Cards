@@ -4,6 +4,8 @@
     {
         IList<Card> Cards { get; }
 
+        public Card WinningCard { get; }
+
         double ComputeScore();
     }
 }
