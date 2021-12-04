@@ -1,15 +1,10 @@
 ﻿using Cards.Data.Game;
+using Cards.Server.Hubs;
 
 namespace Cards.Server.Clients
 {
     public interface IPlayerListClient
     {
-        Task Signup(Player player);
-
-        Task Quit(Player player);
-
-        Task Ready(Player player);
-
-        Task Unready(Player player);
+        Task Update(PlayerListHub.Action action, Player player);
     }
 }

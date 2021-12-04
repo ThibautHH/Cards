@@ -29,17 +29,28 @@
     public IList<Player> players = new List<Player>();
     private int playerCount => players.Count;
 
+    [Parameter]
+    public string GameName { get; set; } = null!;
+
     protected override async Task OnInitializedAsync()
     {
         this.hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/Hubs/PlayerList"))
             .Build();
-        this.hubConnection.On<Player>("Signup", this.Signup);
-        this.hubConnection.On<Player>("Quit", this.Quit);
-        this.hubConnection.On<Player>("Ready", this.Ready);
-        this.hubConnection.On<Player>("Unready", this.Unready);
+        this.hubConnection.On<PlayerListHub.Action, Player>("Update", this.Update);
         await this.hubConnection.StartAsync();
+        await this.hubConnection.InvokeAsync("EnterLobby", this.GameName);
     }
+
+    public Task Update(PlayerListHub.Action action, Player player) =>
+        action switch
+        {
+            PlayerListHub.Action.Signup => this.Signup(player),
+            PlayerListHub.Action.Quit => this.Quit(player),
+            PlayerListHub.Action.Ready => this.Ready(player),
+            PlayerListHub.Action.Unready => this.Unready(player),
+            _ => throw new ArgumentException("This is not a valid PlayerListHub.Action.", nameof(action))
+        };
 
     public Task Signup(Player registeringPlayer)
     {
