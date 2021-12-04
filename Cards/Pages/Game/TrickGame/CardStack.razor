@@ -1,6 +1,8 @@
 ﻿@using Cards.ComponentBase
+@using Cards.Data.Game.TrickGame.Cards
 @inherits CardStackBase
 
 @code {
-
+	[Parameter]
+	public override ITrick Stack { get; set; } = null!;
 }
