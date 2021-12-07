@@ -70,7 +70,7 @@ a, .btn-link {
 }
 
 .tooltip .tooltiptext {
-    display: inherit;
+    display: none;
     visibility: hidden;
     position: relative;
     left: 2px;
@@ -86,6 +86,7 @@ a, .btn-link {
 }
 
 .tooltip:hover .tooltiptext {
+    display: inherit;
     visibility: visible;
     opacity: 1;
 }
