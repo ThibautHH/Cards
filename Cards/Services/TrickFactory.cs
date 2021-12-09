@@ -18,7 +18,7 @@ namespace Cards.Services
                         "I'm a teapot. (Poker isn't a trick-based game)",
                         nameof(game)
                         ),
-                    _ => throw new ArgumentException("This is not a valid game", nameof(game))
+                    _ => throw new ArgumentOutOfRangeException(nameof(game), (int)game, "This is not a valid game")
                 };
     }
 }

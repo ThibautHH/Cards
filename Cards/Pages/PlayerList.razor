@@ -48,7 +48,7 @@
             PlayerListHub.Action.Quit => this.Quit(player),
             PlayerListHub.Action.Ready => this.Ready(player),
             PlayerListHub.Action.Unready => this.Unready(player),
-            _ => throw new ArgumentException("This is not a valid PlayerListHub.Action.", nameof(action))
+            _ => throw new ArgumentOutOfRangeException(nameof(action), (int)action, "This is not a valid PlayerListHub.Action.")
         };
 
     public Task Signup(Player registeringPlayer)

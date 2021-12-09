@@ -25,16 +25,16 @@ namespace Cards.Data.Game
             ? height switch
             {
                 (>= CardHeight.Magician) or CardHeight.Knight =>
-                    throw new ArgumentException("Cannot set card height to trump or Knight" +
-                    " if it is not a Tarot card.", nameof(height)),
+                    throw new ArgumentOutOfRangeException(nameof(height), (int)height, "Cannot set card height to trump or Knight " +
+                    "if it is not a Tarot card."),
                 _ => height
             }
             : this.Deck == CardDeck.Player32
             ? height switch
             {
                 (<= CardHeight.Six) and not CardHeight.Ace =>
-                    throw new ArgumentException("Cannot set card height to lower than seven" +
-                    " if it is a 32-cards deck card.", nameof(height)),
+                    throw new ArgumentOutOfRangeException(nameof(height), (int)height, "Cannot set card height to lower than seven " +
+                    "if it is a 32-cards deck card."),
                 _ => height
             } : height;
 
