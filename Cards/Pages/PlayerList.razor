@@ -10,7 +10,7 @@
 
 <div class="form-group">
     <label>
-        Number of players: @this.playerCount
+        Number of players: @this.players.Count
     </label>
 </div>
 
@@ -27,10 +27,9 @@
 @code {
     public HubConnection hubConnection = null!;
     public IList<Player> players = new List<Player>();
-    private int playerCount => players.Count;
 
     [Parameter]
-    public string GameName { get; set; } = null!;
+    public Data.Game.Game Game { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -39,7 +38,7 @@
             .Build();
         this.hubConnection.On<PlayerListHub.Action, Player>("Update", this.Update);
         await this.hubConnection.StartAsync();
-        await this.hubConnection.InvokeAsync("EnterLobby", this.GameName);
+        await this.hubConnection.InvokeAsync("EnterLobby", this.Game);
     }
 
     public Task Update(PlayerListHub.Action action, Player player) =>

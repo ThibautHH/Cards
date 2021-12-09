@@ -15,15 +15,14 @@ namespace Cards.Server.Hubs
             Unready
         }
 
-        public async Task EnterLobby(string game) =>
+        public async Task EnterLobby(Game game) =>
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, Group(game));
 
-        public async Task Update(Action action, string playerName, string game) =>
+        public async Task Update(Action action, string playerName, Game game) =>
             await this.Clients.Group(Group(game)).Update(action, MakePlayer(playerName, game));
 
-        private static string Group(string game) => $"{game}Players";
+        private static string Group(Game game) => $"{game}Players";
 
-        private static Player MakePlayer(string name, string game) =>
-            new(name, Enum.Parse<Game>(game));
+        private static Player MakePlayer(string name, Game game) => new(name, game);
     }
 }
