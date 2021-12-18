@@ -4,6 +4,9 @@
     {
         public TarotTrick(IEnumerable<Card> cards)
         {
+            foreach (Card card in cards)
+                if (card.Deck != Card.CardDeck.Tarot)
+                    throw new ArgumentException("Cannot use cards not in the Tarot deck.", nameof(cards));
             this.Cards = cards.ToList();
         }
 

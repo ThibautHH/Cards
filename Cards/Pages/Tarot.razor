@@ -1,19 +1,19 @@
 ﻿@page "/tarot"
 @using Cards.ComponentBase
 @using Cards.Data
+@using Cards.Data.Game
 @using Cards.Data.Game.TrickGame
 @using Cards.Pages.Game
 @using Cards.Server.Clients
 @using Cards.Server.Hubs
 @using Cards.Services
 @using Microsoft.AspNetCore.SignalR.Client
-@inherits TrickGameBase
-<div style="display: @(this.inGame ? "none" : "unset");">
+@inherits TrickGameBase<TarotTeam>
+@if (!this.inGame)
+{
     <h3>Tarot</h3>
 
-    <PlayerList @ref="this.playerList"/>
-    @if (!this.inGame)
-    {
+    <PlayerList Game="@this.Game" @ref="this.playerList"/>
     <AuthorizeView>
         <Authorized>
             @if (!this.IsPlaying)
@@ -27,7 +27,7 @@
                 } else
                 {
                     <button class="btn btn-primary" @onclick="this.Unready">Unready</button>
-                    if (this.IsHost && this.hubConnection!.InvokeAsync<bool>("IsGameReady", this.GameName).GetAwaiter().GetResult())
+                    if (this.IsHost && this.IsGameReady)
                     {
                         <button class="btn btn-primary" @onclick="this.Launch">Launch</button>
                     }
@@ -42,14 +42,23 @@
             </div>
         </NotAuthorized>
     </AuthorizeView>
-    }
-</div>
-<div style="display: @(!this.inGame ? "none" : "unset");">
+} else
+{
     <Hand @ref="this.hand"/>
-</div>
+}
 
 @code {
-    protected override string GameName => "Tarot";
-    
-    protected IList<TarotTeam> Teams { get; } = new List<TarotTeam>();
+    protected override Data.Game.Game Game => Data.Game.Game.Tarot;
+    protected override IList<TarotTeam> Teams { get; init; } = new List<TarotTeam>();
+    protected override bool IsGameReady => this.playerList.players.Count switch
+    {
+        >= 2 and <= 5 => true,
+        _ => false
+    };
+
+    protected override void Launch()
+    {
+        this.inGame = true;
+        StateHasChanged();
+    }
 }
