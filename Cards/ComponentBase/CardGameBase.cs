@@ -1,6 +1,7 @@
 ﻿using Cards.Data.Game;
 using Cards.Pages;
 using Cards.Pages.Game;
+using Cards.Server.Clients;
 using Cards.Server.Hubs;
 using Cards.Services;
 
@@ -9,14 +10,17 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Cards.ComponentBase
 {
-    public abstract class CardGameBase : Microsoft.AspNetCore.Components.ComponentBase
+    public abstract class CardGameBase : Microsoft.AspNetCore.Components.ComponentBase, ICardGameClient
     {
         protected PlayerList playerList = null!;
         protected Hand hand = null!;
-        protected bool inGame;
+        protected HubConnection hubConnection = null!;
+        protected bool inGame = false;
 
         [Inject]
         private HttpContextService HttpContextService { get; set; } = null!;
+        [Inject]
+        private NavigationManager NavigationManager { get; set; } = null!;
 
         protected abstract Game Game { get; }
 
@@ -29,6 +33,15 @@ namespace Cards.ComponentBase
         protected bool IsHost => this.IsPlaying & this.playerList.players[0] == this.CurrentPlayer!;
 
         protected abstract bool IsGameReady { get; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            this.hubConnection = new HubConnectionBuilder()
+                .WithUrl(this.NavigationManager.ToAbsoluteUri($"/Hubs/{this.Game}"))
+                .Build();
+            this.hubConnection.On<IEnumerable<Card>>("Start", this.Start);
+            await this.hubConnection.StartAsync();
+        }
 
         protected async void Play()
         {
@@ -58,6 +71,9 @@ namespace Cards.ComponentBase
             this.StateHasChanged();
         }
 
-        protected abstract void Launch();
+        public abstract Task Start(IEnumerable<Card> hand);
+
+        protected async void Launch() =>
+            await this.hubConnection.InvokeAsync("Launch");
     }
 }

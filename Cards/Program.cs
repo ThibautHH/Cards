@@ -121,6 +121,7 @@ namespace Cards
 
                 application.MapBlazorHub();
                 application.MapHub<PlayerListHub>("/Hubs/PlayerList");
+                application.MapHub<TarotHub>("/Hubs/Tarot");
                 application.MapFallbackToPage("/_Host");
             }
             configure();

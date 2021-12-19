@@ -1,12 +1,13 @@
 ﻿using Cards.Data.Game.TrickGame;
 using Cards.Pages.Game.TrickGame;
+using Cards.Server.Clients;
 using Cards.Services;
 
 using Microsoft.AspNetCore.Components;
 
 namespace Cards.ComponentBase
 {
-    public abstract class TrickGameBase<TTeam> : CardGameBase where TTeam : Team
+    public abstract class TrickGameBase<TTeam> : CardGameBase, ITrickGameClient where TTeam : Team
     {
         [Inject]
         protected TrickFactory TrickFactory { get; set; } = null!;
