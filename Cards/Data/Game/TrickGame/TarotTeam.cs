@@ -4,7 +4,7 @@ namespace Cards.Data.Game.TrickGame
 {
     public class TarotTeam : Team
     {
-        public enum Contract
+        public enum Contract : byte
         {
             Take,
             Guard,

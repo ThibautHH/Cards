@@ -7,7 +7,7 @@ namespace Cards.Server.Hubs
 {
     public class PlayerListHub : Hub<IPlayerListClient>
     {
-        public enum Action
+        public enum Action : byte
         {
             Signup,
             Quit,
