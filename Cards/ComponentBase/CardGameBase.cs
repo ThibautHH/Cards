@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Cards.ComponentBase
 {
-    public abstract class CardGameBase : Microsoft.AspNetCore.Components.ComponentBase, ICardGameClient
+    public abstract class CardGameBase : Microsoft.AspNetCore.Components.ComponentBase, ICardGameClient, IAsyncDisposable
     {
         protected PlayerList playerList = null!;
         protected Hand hand = null!;
@@ -47,6 +47,7 @@ namespace Cards.ComponentBase
         {
             await this.playerList.hubConnection
                 .InvokeAsync("Update", PlayerListHub.Action.Signup, this.HttpContextService.CurrentUser.Name, this.Game);
+            await this.hubConnection.InvokeAsync("Play");
             this.StateHasChanged();
         }
 
@@ -54,6 +55,7 @@ namespace Cards.ComponentBase
         {
             await this.playerList.hubConnection
                 .InvokeAsync("Update", PlayerListHub.Action.Quit, this.HttpContextService.CurrentUser.Name, this.Game);
+            await this.hubConnection.InvokeAsync("Quit");
             this.StateHasChanged();
         }
 
@@ -75,5 +77,11 @@ namespace Cards.ComponentBase
 
         protected async void Launch() =>
             await this.hubConnection.InvokeAsync("Launch");
+
+        public async ValueTask DisposeAsync()
+        {
+            if (this.hubConnection is not null)
+                await this.hubConnection.DisposeAsync();
+        }
     }
 }
