@@ -41,20 +41,22 @@ namespace Cards.Server.Hubs
                 for (byte i = 0; i < Players.Count; i++)
                     yield return new List<Card>();
             }
+            /* Generate all the players' hands */
             IList<IList<Card>> hands = new List<IList<Card>>(makeHands());
             Random random = new();
-            byte i = 1;
-            byte n = 1;
-            while (i <= this.Deck.Count)
+
+            /* Card index in the deck */
+            byte i = 0;
+            /* Hand index */
+            byte n = 0;
+            while (i < this.Deck.Count)
             {
                 hands[n % Players.Count] = hands[n++ % Players.Count]
                         .Concat(new List<Card>() { this.Deck[i++], this.Deck[i++], this.Deck[i++] })
                         .ToList();
-                Console.WriteLine(i);
                 if ((random.NextBoolean() && this.Dog.Count < MaxDogCount)
                     || this.Deck.Count - i < (MaxDogCount - this.Dog.Count) * 4)
                     this.Dog.Add(this.Deck[i++]);
-                Console.WriteLine(i);
             }
             return hands;
         }
