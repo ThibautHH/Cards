@@ -12,12 +12,15 @@ namespace Cards.Areas.Identity.Pages.Account
 	public class LoginModel : PageModel
 	{
 		private readonly SignInManager<IdentityUser> _signInManager;
+		private readonly UserManager<IdentityUser> _userManager;
 		private readonly ILogger<LoginModel> _logger;
 
 		public LoginModel(SignInManager<IdentityUser> signInManager,
+			UserManager<IdentityUser> userManager,
 			ILogger<LoginModel> logger)
 		{
 			this._signInManager = signInManager;
+			this._userManager = userManager;
 			this._logger = logger;
 		}
 
@@ -68,7 +71,7 @@ namespace Cards.Areas.Identity.Pages.Account
 
 			if (this.ModelState.IsValid)
 			{
-				Microsoft.AspNetCore.Identity.SignInResult result = await this._signInManager.PasswordSignInAsync(this.Input!.Email, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
+				Microsoft.AspNetCore.Identity.SignInResult result = await this._signInManager.PasswordSignInAsync(await this._userManager.FindByEmailAsync(this.Input!.Email), this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
 				if (result.Succeeded)
 				{
 					this._logger.LogInformation("User logged in.");
