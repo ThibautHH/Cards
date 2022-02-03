@@ -54,7 +54,8 @@
     {
         >= 3 and <= 5 => true,
         _ => false
-    };
+    }
+    && await this.playerList.hubConnection.InvokeAsync<bool>("ArePlayersReady");
 
     private sealed class CardsParameter
     {

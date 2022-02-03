@@ -27,6 +27,14 @@ namespace Cards.Server.Hubs
 
         private static readonly IDictionary<Game, IList<Player>> _lobbies = MakeLobbies();
 
+        public Task<bool> ArePlayersReady(Game game)
+        {
+            bool allReady = true;
+            foreach (Player player in _lobbies[game])
+                allReady = allReady && player.Ready;
+            return Task.FromResult(allReady);
+        }
+
         public async Task EnterLobby(Game game)
         {
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, Group(game));
