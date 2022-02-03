@@ -3,30 +3,39 @@
 @using Cards.Pages.Game.TrickGame
 
 <div class="hand">
-	@foreach (Card card in this.hand)
+	@if (this.Cards is not null)
 	{
-		<span class="playing-card @(card.Color.ToString().ToLower()) @(card.Height.ToString().ToLower())">
-			<span class="header"></span>
-			<span class="body"></span>
-			<span class="footer"></span>
-		</span>
+		foreach (Card card in this.Cards!)
+		{
+			<div class="playing-card @(card.Color.ToString().ToLower()) @(card.Height.ToString().ToLower())">
+				<span class="header"></span>
+				<span class="footer"></span>
+			</div>
+		}
 	}
 </div>
 
 @code {
-	public IList<Card> hand = new List<Card>();
+	[Parameter]
+	public IList<Card>? Cards { get; set; }
+
+	[Parameter]
+	public EventCallback<IList<Card>?> CardsChanged { get; set; }
 
 	[Parameter]
 	public bool Playable { get; set; }
 
-	public void PlayCard(Player player, ref Card card, ref CardStack onTo)
+	public async void PlayCard(Player player, Card card, CardStack onTo)
 	{
 		if (!this.Playable)
-			throw new InvalidOperationException("Cannot play a card if Hand.Playable "
-				+ "is set to false.");
-		if (!this.hand.Contains(card))
-			throw new ArgumentException("Cannot play a card not in Hand.hand list.", nameof(Card));
+			throw new InvalidOperationException("Cannot play a card if Hand.Playable is set to false.");
+		if (!this.Cards!.Contains(card))
+			throw new ArgumentException("Cannot play a card not in Hand.Cards list.", nameof(Card));
 		card.Play(player, ref onTo);
-		this.hand.Remove(card);
+		this.Cards.Remove(card);
+		await this.CardsChanged.InvokeAsync(this.Cards);
 	}
+
+	protected override void OnParametersSet() => base.OnParametersSet();
+	protected override Task OnParametersSetAsync() => base.OnParametersSetAsync();
 }

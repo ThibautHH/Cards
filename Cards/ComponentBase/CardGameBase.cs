@@ -15,7 +15,6 @@ namespace Cards.ComponentBase
         protected PlayerList playerList = null!;
         protected Hand hand = null!;
         protected HubConnection hubConnection = null!;
-        protected bool inGame = false;
 
         [Inject]
         private HttpContextService HttpContextService { get; set; } = null!;

@@ -1,1 +1,154 @@
-﻿
+﻿.hand {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-flow: row wrap;
+    flex-grow: 1;
+}
+
+.hand .playing-card {
+    position: inherit;
+    bottom: inherit;
+    width: 150px;
+    height: 243px;
+    text-align: center;
+}
+
+.hand .playing-card .header {
+    position: absolute;
+    top: 0;
+    width: --moz-fit-content;
+    height: 20%;
+}
+    .hand .playing-card.ace .header::after {
+        content: "Ace";
+    }
+    .hand .playing-card.two .header::after {
+        content: "Two";
+    }
+    .hand .playing-card.three .header::after {
+        content: "Three";
+    }
+    .hand .playing-card.four .header::after {
+        content: "Four";
+    }
+    .hand .playing-card.five .header::after {
+        content: "Five";
+    }
+    .hand .playing-card.six .header::after {
+        content: "Six";
+    }
+    .hand .playing-card.seven .header::after {
+        content: "Seven";
+    }
+    .hand .playing-card.eight .header::after {
+        content: "Eight";
+    }
+    .hand .playing-card.nine .header::after {
+        content: "Nine";
+    }
+    .hand .playing-card.ten .header::after {
+        content: "Ten";
+    }
+    .hand .playing-card.jack .header::after {
+        content: "Jack";
+    }
+    .hand .playing-card.knight .header::after {
+        content: "Knight";
+    }
+    .hand .playing-card.queen .header::after {
+        content: "Queen";
+    }
+    .hand .playing-card.king .header::after {
+        content: "King";
+    }
+    .hand .playing-card.magician .header::after {
+        content: "The Magician";
+    }
+    .hand .playing-card.highpriestess .header::after {
+        content: "The High Priestess";
+    }
+    .hand .playing-card.empress .header::after {
+        content: "The Empress";
+    }
+    .hand .playing-card.emperor .header::after {
+        content: "The Emperor";
+    }
+    .hand .playing-card.hierophant .header::after {
+        content: "The Hierophant";
+    }
+    .hand .playing-card.lovers .header::after {
+        content: "The Lovers";
+    }
+    .hand .playing-card.chariot .header::after {
+        content: "The Chariot";
+    }
+    .hand .playing-card.strength .header::after {
+        content: "Strength";
+    }
+    .hand .playing-card.hermit .header::after {
+        content: "The Hermit";
+    }
+    .hand .playing-card.wheeloffortune .header::after {
+        content: "Wheel of Fortune";
+    }
+    .hand .playing-card.justice .header::after {
+        content: "Justice";
+    }
+    .hand .playing-card.hangedman .header::after {
+        content: "The Hanged Man";
+    }
+    .hand .playing-card.death .header::after {
+        content: "Death";
+    }
+    .hand .playing-card.temperance .header::after {
+        content: "Temperance";
+    }
+    .hand .playing-card.devil .header::after {
+        content: "The Devil";
+    }
+    .hand .playing-card.tower .header::after {
+        content: "The Tower";
+    }
+    .hand .playing-card.stars .header::after {
+        content: "The Stars";
+    }
+    .hand .playing-card.moon .header::after {
+        content: "The Moon";
+    }
+    .hand .playing-card.sun .header::after {
+        content: "The Sun";
+    }
+    .hand .playing-card.judgement .header::after {
+        content: "Judgement";
+    }
+    .hand .playing-card.world .header::after {
+        content: "The World";
+    }
+    .hand .playing-card.fool .header::after {
+        content: "The Fool";
+    }
+
+.hand .playing-card .footer {
+    position: absolute;
+    bottom: 0;
+    width: --moz-fit-content;
+    height: 20%;
+}
+    .hand .playing-card.heart .footer::after {
+        content: "Heart"
+    }
+    .hand .playing-card.diamond .footer::after {
+        content: "Diamond"
+    }
+    .hand .playing-card.club .footer::after {
+        content: "Club"
+    }
+    .hand .playing-card.spade .footer::after {
+        content: "Spade"
+    }
+    .hand .playing-card.trump .footer::after {
+        content: "Trump"
+    }

@@ -22,25 +22,21 @@ namespace Cards.Server.Hubs
                 await this.Clients.Client(Players[i]).Start(hands[i]);
         }
 
-        public async Task Play()
+        public Task Play()
         {
-            Console.WriteLine(this.Context.ConnectionId);
             Players.Add(this.Context.ConnectionId);
-            Console.WriteLine(Players.Count);
+            return Task.CompletedTask;
         }
 
-        public async Task Quit()
+        public Task Quit()
         {
-            Console.WriteLine(this.Context.ConnectionId);
             Players.Remove(this.Context.ConnectionId);
-            Console.WriteLine(Players.Count);
+            return Task.CompletedTask;
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            Console.WriteLine(this.Context.ConnectionId);
             Players.Remove(this.Context.ConnectionId);
-            Console.WriteLine(Players.Count);
             return base.OnDisconnectedAsync(exception);
         }
     }
