@@ -36,55 +36,18 @@
         this.hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/Hubs/PlayerList"))
             .Build();
-        this.hubConnection.On<PlayerListHub.Action, Player>("Update", this.Update);
+        this.hubConnection.On<IList<Player>>("Update", this.Update);
         await this.hubConnection.StartAsync();
         await this.hubConnection.InvokeAsync("EnterLobby", this.Game);
     }
 
-    public Task Update(PlayerListHub.Action action, Player player) =>
-        action switch
-        {
-            PlayerListHub.Action.Signup => this.Signup(player),
-            PlayerListHub.Action.Quit => this.Quit(player),
-            PlayerListHub.Action.Ready => this.Ready(player),
-            PlayerListHub.Action.Unready => this.Unready(player),
-            _ => throw new ArgumentOutOfRangeException(nameof(action), (int)action, "This is not a valid PlayerListHub.Action.")
-        };
-
-    public Task Signup(Player registeringPlayer)
+    public Task Update(IList<Player> playerList)
     {
-        if (this.players.SingleOrDefault(player => player == registeringPlayer) is null)
-        {
-            this.players.Add(registeringPlayer);
-            this.StateHasChanged();
-        }
-        return Task.CompletedTask;
-    }
-
-    public Task Quit(Player player)
-    {
-        if (this.players.SingleOrDefault(quitingPlayer => quitingPlayer == player) is Player quitingPlayer)
-        {
-            this.players.Remove(quitingPlayer);
-            this.StateHasChanged();
-        }
-        return Task.CompletedTask;
-    }
-
-    public Task Ready(Player player)
-    {
-        this.players.Single(playerToReady => playerToReady == player).SetReady();
+        this.players = playerList;
         this.StateHasChanged();
         return Task.CompletedTask;
     }
 
-    public Task Unready(Player player)
-    {
-        this.players.Single(playerToUnready => playerToUnready == player).Unready();
-        this.StateHasChanged();
-        return Task.CompletedTask;
-    }
-        
     public async ValueTask DisposeAsync()
     {
         if (this.hubConnection is not null)

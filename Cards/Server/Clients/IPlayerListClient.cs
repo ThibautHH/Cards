@@ -5,6 +5,6 @@ namespace Cards.Server.Clients
 {
     public interface IPlayerListClient
     {
-        Task Update(PlayerListHub.Action action, Player player);
+        Task Update(IList<Player> playerList);
     }
 }
