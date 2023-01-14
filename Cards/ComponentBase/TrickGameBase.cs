@@ -7,8 +7,7 @@ namespace Cards.ComponentBase
 {
     public abstract class TrickGameBase : CardGameBase
     {
-        protected TrickGameBase(HttpContextService httpContextService, NavigationManager navigationManager)
-            : base(httpContextService, navigationManager)
+        protected TrickGameBase() : base()
         {
         }
 

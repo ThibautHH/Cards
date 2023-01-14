@@ -11,22 +11,24 @@ namespace Cards.ComponentBase
 {
     public abstract class CardGameBase : Microsoft.AspNetCore.Components.ComponentBase, IAsyncDisposable
     {
-        private readonly HttpContextService _httpContextService;
-        private readonly NavigationManager _navigationManager;
         protected HubConnection hubConnection = null!;
         protected PlayerList playerList = null!;
         protected Hand hand = null!;
         protected readonly bool inGame;
 
-        protected CardGameBase(HttpContextService httpContextService, NavigationManager navigationManager)
+        protected CardGameBase()
         {
-            this._httpContextService = httpContextService;
-            this._navigationManager = navigationManager;
         }
+        
+        [Inject]
+        private NavigationManager NavigationManager { get; set; } = default!;
 
+        [Inject]
+        protected HttpContextService HttpContextService { get; set; } = default!;
+        
         protected abstract string GameName { get; }
 
-        protected Player? CurrentPlayer => this.playerList.players.SingleOrDefault(player => player.Name == this._httpContextService.CurrentUser.Name);
+        protected Player? CurrentPlayer => this.playerList.players.SingleOrDefault(player => player.Name == this.HttpContextService.CurrentUser.Name);
 
         protected bool IsPlaying => this.CurrentPlayer is not null;
 
@@ -37,7 +39,7 @@ namespace Cards.ComponentBase
         protected override async Task OnInitializedAsync()
         {
             this.hubConnection = new HubConnectionBuilder()
-                .WithUrl(this._navigationManager.ToAbsoluteUri("/Hubs/PlayerList"))
+                .WithUrl(this.NavigationManager.ToAbsoluteUri("/Hubs/PlayerList"))
                 .Build();
 
             await this.hubConnection.StartAsync();
@@ -46,19 +48,19 @@ namespace Cards.ComponentBase
 
         protected async void Play() =>
             await this.playerList.hubConnection
-                .InvokeAsync("Update", PlayerListAction.Signup, this._httpContextService.CurrentUser.Name, this.GameName);
+                .InvokeAsync("Update", PlayerListAction.Signup, this.HttpContextService.CurrentUser.Name, this.GameName);
 
         protected async void Quit() =>
             await this.playerList.hubConnection
-                .InvokeAsync("Update", PlayerListAction.Quit, this._httpContextService.CurrentUser.Name, this.GameName);
+                .InvokeAsync("Update", PlayerListAction.Quit, this.HttpContextService.CurrentUser.Name, this.GameName);
 
         protected async void Ready() =>
             await this.playerList.hubConnection
-                .InvokeAsync("Update", PlayerListAction.Ready, this._httpContextService.CurrentUser.Name, this.GameName);
+                .InvokeAsync("Update", PlayerListAction.Ready, this.HttpContextService.CurrentUser.Name, this.GameName);
 
         protected async void Unready() =>
             await this.playerList.hubConnection
-                .InvokeAsync("Update", PlayerListAction.Unready, this._httpContextService.CurrentUser.Name, this.GameName);
+                .InvokeAsync("Update", PlayerListAction.Unready, this.HttpContextService.CurrentUser.Name, this.GameName);
 
         public async ValueTask DisposeAsync()
         {
