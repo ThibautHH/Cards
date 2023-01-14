@@ -8,6 +8,8 @@ namespace Cards.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateSchema("identity");
+            
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 schema: "identity",
