@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cards
@@ -20,8 +21,14 @@ namespace Cards
             void configureServices()
             {
                 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(
-                        builder.Configuration.GetConnectionString("Cards")));
+                {
+                    string connectionString =
+                        new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("Cards"))
+                        {
+                            Password = builder.Configuration["ConnectionStrings:CardsPassword"]
+                        }.ConnectionString;
+                    options.UseSqlServer(connectionString);
+                });
                 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
                 builder.Services.AddDefaultIdentity<IdentityUser>()
@@ -113,7 +120,10 @@ namespace Cards
 
                 application.UseHttpsRedirection();
                 application.UseStaticFiles();
-
+                
+                using (var srvc = application.Services.CreateScope())
+                    srvc.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.Migrate();
+                
                 application.UseRouting();
 
                 application.UseAuthentication();
