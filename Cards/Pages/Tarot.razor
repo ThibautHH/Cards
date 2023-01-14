@@ -1,47 +1,45 @@
 ﻿@page "/tarot"
-@using Cards.ComponentBase
+@using Microsoft.AspNetCore.SignalR.Client
 @using Cards.Data.Game.TrickGame
 @using Cards.Pages.Game
-@using Microsoft.AspNetCore.SignalR.Client
-@inherits TrickGameBase
-@if (!this.inGame)
+@inherits Cards.ComponentBase.TrickGameBase
+@if (!inGame)
 {
-<h3>Tarot</h3>
-
-<PlayerList @ref="this.playerList"/>
-<AuthorizeView>
-    <Authorized>
-        @if (!this.IsPlaying)
-        {
-        <button class="btn btn-primary" @onclick="this.Play">Play</button>
-        } else if (!this.IsReady)
-        {
-        <button class="btn btn-primary" @onclick="this.Ready">Ready</button>
-        <button class="btn btn-primary" @onclick="this.Quit">Quit</button>
-        } else
-        {
-        <button class="btn btn-primary" @onclick="this.Unready">Unready</button>
-            @if (this.IsHost && this.hubConnection.InvokeAsync<bool>("IsGameReady", this.GameName).GetAwaiter().GetResult())
+    <h3>Tarot</h3>
+    <PlayerList @ref="playerList" />
+    <AuthorizeView>
+        <Authorized>
+            @if (!IsPlaying)
             {
-        <button class="btn btn-primary" @onclick="this.Launch">Launch</button>
+                <button class="btn btn-primary" @onclick="Play">Play</button>
+            } else if (!IsReady)
+            {
+                <button class="btn btn-primary" @onclick="Ready">Ready</button>
+                <button class="btn btn-primary" @onclick="Quit">Quit</button>
+            } else
+            {
+                <button class="btn btn-primary" @onclick="Unready">Unready</button>
+                @if (IsHost && hubConnection.InvokeAsync<bool>("IsGameReady", GameName).GetAwaiter().GetResult())
+                {
+                    <button class="btn btn-primary" @onclick="this.Launch">Launch</button>
+                }
+                <button class="btn btn-primary" @onclick="Quit">Quit</button>
             }
-        <button class="btn btn-primary" @onclick="this.Quit">Quit</button>
-        }
-    </Authorized>
-    <NotAuthorized>
-        <div class="tooltip">
-            <button class="btn btn-primary" disabled>Play</button>
-            <span class="tooltip-text requires-authentication"></span>
-        </div>
-    </NotAuthorized>
-</AuthorizeView>
+        </Authorized>
+        <NotAuthorized>
+            <div class="tooltip">
+                <button class="btn btn-primary" disabled>Play</button>
+                <span class="tooltip-text requires-authentication"></span>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
 } else
 {
-    <Hand @ref="this.hand"/>
+    <Hand @ref="hand" />
 }
 
 @code {
     protected override string GameName => "Tarot";
-    
+
     protected IList<TarotTeam> Teams { get; } = new List<TarotTeam>();
 }

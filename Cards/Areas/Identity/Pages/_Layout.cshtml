@@ -1,6 +1,6 @@
-﻿@using Microsoft.AspNetCore.Components.Web
+﻿@using Microsoft.AspNetCore.Mvc.ViewEngines
+@using Microsoft.AspNetCore.Components.Web
 @using Cards.Shared
-@using Microsoft.AspNetCore.Mvc.ViewEngines
 @namespace Cards.Pages
 @inject ICompositeViewEngine Engine
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -15,18 +15,18 @@
     <link rel="stylesheet" href="~/Identity/css/site.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
-    <link href="Cards.styles.css" rel="stylesheet"/>
+    <link href="Cards.styles.css" rel="stylesheet" />
 </head>
 <body>
     <div class="page">
         <div class="sidebar">
-            <component type="typeof(NavMenu)" 
-                render-mode="ServerPrerendered" />
+            <component type="typeof(NavMenu)"
+                       render-mode="ServerPrerendered" />
         </div>
 
         <main>
             <div class="top-row px-4 auth">
-                @{await Html.RenderPartialAsync("_LoginPartial");}
+                @{ await Html.RenderPartialAsync("_LoginPartial"); }
             </div>
 
             <article class="content px-4">
@@ -38,7 +38,7 @@
     <script src="~/Identity/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/Identity/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/Identity/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", false)
     <script src="_framework/blazor.server.js"></script>
 </body>
 </html>

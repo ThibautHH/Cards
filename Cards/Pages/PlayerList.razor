@@ -1,26 +1,25 @@
-@using Cards.Data
-@using Cards.Data.Game
-@using Cards.Server.Clients
-@using Cards.Server.Hubs
-@using Microsoft.AspNetCore.SignalR
-@using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager NavigationManager
 @implements IPlayerListClient
+@using Microsoft.AspNetCore.SignalR.Client
+@using Cards.Data.Game
 @implements IAsyncDisposable
 
 <div class="form-group">
     <label>
-        Number of players: @this.playerCount
+        Number of players: @(playerCount.ToString())
     </label>
 </div>
 
 <hr />
 
 <ul id="playerList">
-    @foreach (Player player in this.players)
+    @foreach (Player player in players)
     {
-
-        <li>@player.Name | @(player.Ready ? string.Empty : "Not ")Ready</li>
+        <li>
+            @player.Name | @(player.Ready
+                               ? string.Empty
+                               : "Not ")Ready
+        </li>
     }
 </ul>
 
@@ -31,53 +30,54 @@
 
     protected override async Task OnInitializedAsync()
     {
-        this.hubConnection = new HubConnectionBuilder()
+        hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/Hubs/PlayerList"))
             .Build();
-        this.hubConnection.On<Player>("Signup", this.Signup);
-        this.hubConnection.On<Player>("Quit", this.Quit);
-        this.hubConnection.On<Player>("Ready", this.Ready);
-        this.hubConnection.On<Player>("Unready", this.Unready);
-        await this.hubConnection.StartAsync();
+        hubConnection.On<Player>("Signup", Signup);
+        hubConnection.On<Player>("Quit", Quit);
+        hubConnection.On<Player>("Ready", Ready);
+        hubConnection.On<Player>("Unready", Unready);
+        await hubConnection.StartAsync();
     }
 
     public Task Signup(Player registeringPlayer)
     {
-        if (this.players.SingleOrDefault(player => player == registeringPlayer) is null)
+        if (players.SingleOrDefault(player => player == registeringPlayer) is null)
         {
-            this.players.Add(registeringPlayer);
-            this.StateHasChanged();
+            players.Add(registeringPlayer);
+            StateHasChanged();
         }
         return Task.CompletedTask;
     }
 
     public Task Quit(Player player)
     {
-        if (this.players.SingleOrDefault(quitingPlayer => quitingPlayer == player) is Player quitingPlayer)
+        if (players.SingleOrDefault(quitingPlayer => quitingPlayer == player) is Player quitingPlayer)
         {
-            this.players.Remove(quitingPlayer);
-            this.StateHasChanged();
+            players.Remove(quitingPlayer);
+            StateHasChanged();
         }
         return Task.CompletedTask;
     }
 
     public Task Ready(Player player)
     {
-        this.players.Single(playerToReady => playerToReady == player).SetReady();
-        this.StateHasChanged();
+        players.Single(playerToReady => playerToReady == player).SetReady();
+        StateHasChanged();
         return Task.CompletedTask;
     }
 
     public Task Unready(Player player)
     {
-        this.players.Single(playerToUnready => playerToUnready == player).Unready();
-        this.StateHasChanged();
+        players.Single(playerToUnready => playerToUnready == player).Unready();
+        StateHasChanged();
         return Task.CompletedTask;
     }
-        
+
     public async ValueTask DisposeAsync()
     {
-        if (this.hubConnection is not null)
-            await this.hubConnection.DisposeAsync();
+        if (hubConnection is not null)
+            await hubConnection.DisposeAsync();
     }
+
 }

@@ -30,7 +30,6 @@
             obj is Player player
             && player == this;
 
-        public override int GetHashCode() =>
-            System.HashCode.Combine(this.Name, this.Game);
+        public override int GetHashCode() => HashCode.Combine(this.Name, this.Game);
     }
 }

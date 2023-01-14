@@ -10,7 +10,7 @@ namespace Cards.Data.Game.TrickGame
             Defense
         }
 
-        public Team(IEnumerable<Player> players)
+        protected Team(IEnumerable<Player> players)
         {
             this.Players = players.ToList();
             this.Tricks ??= null!;
@@ -18,7 +18,7 @@ namespace Cards.Data.Game.TrickGame
 
         public IList<Player> Players { get; init; }
 
-        public Side TeamSide { get; init; }
+        protected Side TeamSide { get; init; }
 
         public IList<ITrick> Tricks { get; init; }
 

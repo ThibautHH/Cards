@@ -1,8 +1,9 @@
-﻿@using Cards.ComponentBase
-@using Cards.Data.Game.TrickGame.Cards
-@inherits CardStackBase
+﻿@using Cards.Data.Game.TrickGame.Cards
+@inherits Cards.ComponentBase.CardStackBase
 
 @code {
-	[Parameter]
-	public override ITrick Stack { get; set; } = null!;
+
+    [Parameter]
+    public override ITrick Stack { get; set; } = null!;
+
 }

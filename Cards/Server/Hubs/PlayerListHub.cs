@@ -24,34 +24,25 @@ namespace Cards.Server.Hubs
             {
                 case PlayerListAction.Signup:
                     await this.Clients.Group(Group(game))
-                        .Signup(
-                            MakePlayer(playerName, game)
-                        );
+                       .Signup(MakePlayer(playerName, game));
                     break;
                 case PlayerListAction.Quit:
                     await this.Clients.Group(Group(game))
-                        .Quit(
-                            MakePlayer(playerName, game)
-                        );
+                       .Quit(MakePlayer(playerName, game));
                     break;
                 case PlayerListAction.Ready:
                     await this.Clients.Group(Group(game))
-                        .Ready(
-                            MakePlayer(playerName, game)
-                        );
+                       .Ready(MakePlayer(playerName, game));
                     break;
                 case PlayerListAction.Unready:
                     await this.Clients.Group(Group(game))
-                        .Unready(
-                            MakePlayer(playerName, game)
-                        );
+                       .Unready(MakePlayer(playerName, game));
                     break;
             }
         }
 
         private static string Group(string game) => $"{game}Players";
 
-        private static Player MakePlayer(string name, string game) =>
-            new(name, Enum.Parse<Game>(game));
+        private static Player MakePlayer(string name, string game) => new(name, Enum.Parse<Game>(game));
     }
 }
