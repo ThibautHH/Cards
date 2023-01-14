@@ -68,7 +68,7 @@ namespace Cards.Areas.Identity.Pages.Account
 
 			if (this.ModelState.IsValid)
 			{
-				Microsoft.AspNetCore.Identity.SignInResult result = await this._signInManager.PasswordSignInAsync(this.Input!.Email, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
+				Microsoft.AspNetCore.Identity.SignInResult result = await this._signInManager.PasswordSignInAsync(this.Input!.Email!, this.Input.Password!, this.Input.RememberMe, lockoutOnFailure: false);
 				if (result.Succeeded)
 				{
 					this._logger.LogInformation("User logged in.");

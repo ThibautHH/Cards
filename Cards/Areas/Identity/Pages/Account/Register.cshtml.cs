@@ -71,7 +71,7 @@ namespace Cards.Areas.Identity.Pages.Account
 			if (this.ModelState.IsValid)
 			{
 				IdentityUser user = new() { UserName = this.Input!.Email, Email = this.Input.Email };
-				IdentityResult result = await this._userManager.CreateAsync(user, this.Input.Password);
+				IdentityResult result = await this._userManager.CreateAsync(user, this.Input.Password!);
 				if (result.Succeeded)
 				{
 					this._logger.LogInformation("User created a new account with password.");
@@ -84,7 +84,7 @@ namespace Cards.Areas.Identity.Pages.Account
 						values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
 						protocol: this.Request.Scheme);
 
-					await this._emailSender.SendEmailAsync(this.Input.Email, "Confirm your email",
+					await this._emailSender.SendEmailAsync(this.Input.Email!, "Confirm your email",
 						$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl!)}'>clicking here</a>.");
 
 					if (this._userManager.Options.SignIn.RequireConfirmedAccount)

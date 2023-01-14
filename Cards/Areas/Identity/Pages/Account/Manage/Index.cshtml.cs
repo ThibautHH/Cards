@@ -37,8 +37,8 @@ namespace Cards.Areas.Identity.Pages.Account.Manage
 
 		private async Task LoadAsync(IdentityUser user)
 		{
-			string userName = await this._userManager.GetUserNameAsync(user);
-			string phoneNumber = await this._userManager.GetPhoneNumberAsync(user);
+			string? userName = await this._userManager.GetUserNameAsync(user);
+			string? phoneNumber = await this._userManager.GetPhoneNumberAsync(user);
 
 			this.Input = new InputModel
 			{
@@ -49,11 +49,9 @@ namespace Cards.Areas.Identity.Pages.Account.Manage
 
 		public async Task<IActionResult> OnGetAsync()
 		{
-			IdentityUser user = await this._userManager.GetUserAsync(this.User);
-			if (user == null)
-			{
+			IdentityUser? user = await this._userManager.GetUserAsync(this.User);
+			if (user is null)
 				return this.NotFound($"Unable to load user with ID '{this._userManager.GetUserId(this.User)}'.");
-			}
 
 			await this.LoadAsync(user);
 			return this.Page();
@@ -61,11 +59,9 @@ namespace Cards.Areas.Identity.Pages.Account.Manage
 
 		public async Task<IActionResult> OnPostAsync()
 		{
-			IdentityUser user = await this._userManager.GetUserAsync(this.User);
-			if (user == null)
-			{
+			IdentityUser? user = await this._userManager.GetUserAsync(this.User);
+			if (user is null)
 				return this.NotFound($"Unable to load user with ID '{this._userManager.GetUserId(this.User)}'.");
-			}
 
 			if (!this.ModelState.IsValid)
 			{
@@ -73,7 +69,7 @@ namespace Cards.Areas.Identity.Pages.Account.Manage
 				return this.Page();
 			}
 
-			string userName = await this._userManager.GetUserNameAsync(user);
+			string? userName = await this._userManager.GetUserNameAsync(user);
 			if (this.Input!.Username != userName)
 			{
 				IdentityResult setUserNameResult = await this._userManager.SetUserNameAsync(user, this.Input.Username);
@@ -84,7 +80,7 @@ namespace Cards.Areas.Identity.Pages.Account.Manage
 				}
 			}
 
-			string phoneNumber = await this._userManager.GetPhoneNumberAsync(user);
+			string? phoneNumber = await this._userManager.GetPhoneNumberAsync(user);
 			if (this.Input!.PhoneNumber != phoneNumber)
 			{
 				IdentityResult setPhoneResult = await this._userManager.SetPhoneNumberAsync(user, this.Input.PhoneNumber);
